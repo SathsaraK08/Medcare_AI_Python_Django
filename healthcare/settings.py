@@ -2,20 +2,9 @@ import os
 from pathlib import Path
 import dj_database_url
 
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
-
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'dhup^y*ngb9w+-8h2=w^s+ucy0-p7_8f_3c!7tn!jy2xlmyh8_'
@@ -119,6 +108,15 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = ( os.path.join(BASE_DIR, "core/static"),)
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
