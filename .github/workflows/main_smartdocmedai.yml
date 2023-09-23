@@ -30,8 +30,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Set environment variables
+        run: |
+          echo "DJANGO_SUPERUSER_PASSWORD=mysecretpassword" >> $GITHUB_ENV
+          echo "DJANGO_COLLECTSTATIC_NOINPUT=1" >> $GITHUB_ENV
+
+
+
       - name: Run collectstatic
-        run: python manage.py collectstatic
+        run: |
+          python manage.py collectstatic
+        
 
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
