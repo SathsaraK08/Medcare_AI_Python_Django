@@ -1,11 +1,13 @@
 from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
+from django.urls import path
+from your_app.views import health_check
 
 
 
 urlpatterns = [
-
+path('health/', health_check, name='health_check'),
 path('', views.home, name='home'),
 path('register/', views.registerView, name='reg'),
 path('reg_user/', views.registerUser, name='reg_user'),
