@@ -11,6 +11,15 @@ from django.contrib import messages
 import joblib as joblib
 from django.contrib.auth.hashers import make_password
 
+# In your_app/views.py
+from django.http import JsonResponse
+
+def health_check(request):
+    # Implement your health check logic here
+    if your_health_check_logic():
+        return JsonResponse({"status": "OK"})
+    else:
+        return JsonResponse({"status": "Error"}, status=500)
 
 
 def about(request):
