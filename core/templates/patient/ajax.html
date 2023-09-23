@@ -1,0 +1,261 @@
+
+<head>
+
+<style>
+
+@import url('https://fonts.google.com/specimen/Heebo');	
+
+.btn_ment {
+	margin-right:15px;
+	font-size: 15px;
+	font-weight: bold;
+	border-radius: 5px;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+  
+}
+
+.btn_cancel{
+	margin-right: 15px;
+	font-size: 15px;
+	font-weight: bold;
+	border-radius: 5px;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.btn_confirm{
+
+	color: white;
+	font-size: 15px;
+	font-weight: bold;
+	border-radius: 5px;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#result {
+  text-align: center;
+  margin:auto;
+  display:inline-block;
+}
+
+#result p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+.highlight {
+  background-color: #004080;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  text-decoration: none;
+  margin-left: 5px;
+  font-family:helvetica;
+}
+
+.msg{
+  background-color: #004080;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  text-decoration: none;
+  margin-left: 5px;
+  font-family:helvetica;
+  display:inline-block;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center; /* Center align the message text */
+  margin: 0 auto; /* Center the container horizontally */
+  margin: left 60px;
+}
+
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+		
+   // Predict Disease
+   $('#predict_btn').click(function(){
+		console.log('Button Predict Clicked');
+		var s1 = $('.myform #Symptom1').val();
+		var s2 = $('.myform #Symptom2').val();
+		var s3 = $('.myform #Symptom3').val();
+		var s4 = $('.myform #Symptom4').val();
+		var s5 = $('.myform #Symptom5').val();
+		var id = $('.myform #user_id').val();
+
+
+		console.log(s1);
+		console.log(s2);
+		console.log(s3);
+		console.log(s4);
+		console.log(s5);
+		console.log(id);
+
+		if(s1 == ""){
+    	alert("Please Enter 1st Symptom")
+        }else if(s2 == ""){
+    	alert("Please Enter 2st Symptom")
+        }else if(s3 == ""){
+       alert("Please Enter 3st Symptom")
+       }else if(s4 == ""){
+       	alert("Please Enter 4st Symptom")
+       }else if(s5 == ""){
+       	alert("Please Enter 5st Symptom")
+       }else{
+
+       	mydata = {id:id,s2:s2, s3:s3, s4:s4, s5:s5,s1:s1};
+		$.ajax({
+			url: "{% url 'predict' %}",
+			method: "POST",
+			data:mydata,
+
+
+
+success: function(data) {
+  x = data.status; 
+  console.log('Data Sent To The Backend');
+  console.log('Predicted Disease', x);
+  $('#result').html("");
+  $('#result').append('<p>There Are Chances You Have <span class="highlight">' + x +'</span> </p>'); 
+  $('#result').append('<button class="btn btn-primary btn_ment" data-sid="'+x+'">Make Appointment</button>');
+  $('#result').append('<button class="btn btn-danger btn_cancel" data-sid="'+x+'">Cancel Appointment</button>');
+  $('#result').append('<button class="btn btn-success btn_confirm" data-sid="'+x+'">Confirm Appointment</button>');		
+  
+  console.log($('.btn_ment').length);
+
+  $(document).ready(function() {
+    $('.btn_ment').click(function(event) {
+      event.preventDefault(); // Prevent default form submission behavior
+      
+      // Redirect to appointment page
+      window.location.href = "/result"; 
+    });
+  });
+}
+			
+
+		});
+
+       }
+      
+      })
+
+
+  // Make Appointment
+  $('#tbody').on("click", ".btn_ment", function(){
+  	console.log('Button Appointment Clicked');
+	let disease = $(this).attr("data-sid");
+	var userid = $('#tbody #user_id').val();
+
+	console.log('Prediction ID is',disease);
+	console.log('User ID is',userid);
+
+	mydata = {disease:disease, userid:userid};
+		$.ajax({
+			url: "{% url 'ment' %}",
+			method: "POST",
+			data:mydata,
+
+			success:function(data){
+				x = data.status; 
+				console.log('Data Sent To The Backend');
+				console.log('Appointment Status Is ',x);
+
+				if(x == 'saved'){
+					$('#ment_result').html("");
+
+					$('#ment_result').append('<p class=msg> Appointment Was Successfully Requested </p>');
+				}else if(x == 'exist'){
+					$('#ment_result').html("");
+					$('#ment_result').append('<p class=msg> Appointment Request Exist </p>');
+				}else {
+					$('#ment_result').html("");
+				    $('#ment_result').append('<p class=msg> Something Went Wrong </p>');
+
+				}
+			}
+		});
+  });
+
+
+
+
+  // Make Appointment
+  $('#tbody').on("click", ".btn_view", function(){
+  	console.log('Button Symptoms Clicked');
+	let disease = $(this).attr("data-sid");
+	var userid = $('#tbody #user_id').val();
+
+	console.log('Prediction ID is',disease);
+	console.log('User ID is',userid);
+
+	mydata = {disease:disease, userid:userid};
+		$.ajax({
+			url: "",
+			method: "POST",
+			data:mydata,
+
+			success:function(data){
+				console.log('Data Sent To The Backend');
+
+			}
+		});
+  });
+
+
+});
+
+</script>
+
+</head>
+
+

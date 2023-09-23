@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#ment_result {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center; /* Center align the message text */
+  margin: 0 auto; /* Center the container horizontally */
+  margin-left: 60px;
+}
+
+#ment_result p {
+  margin: 0;
+  font-size: 18px;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+#ment_result.success {
+  background-color: #04557b;
+  color: #ffffff;
+}
+
+#ment_result.error {
+  background-color: #800000;
+  color: #ffffff;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div id="ment_result"></div>
+</div>
+
+<!-- JavaScript code  -->
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+		
+
+  // ---------------------Recommend Drug---------------------------
+	
+  $('#tbody').on("click", ".btn_recommend", function(){
+  	console.log('Button Recommend Drug Clicked');
+	let disease = $(this).attr("data-sid");
+	var userid = $('#tbody #user_id').val();
+
+
+	console.log('Prediction ID is',disease);
+	console.log('User ID is',userid);
+
+
+	mydata = {disease:disease, userid:userid};
+		$.ajax({
+			url: "{% url 'mend' %}",
+			method: "POST",
+			data:mydata,
+
+	success: function (data) {
+    x = data.status; 
+    console.log('Data Sent To The Backend');
+    console.log('Appointment Status Is ', x);
+
+    // Remove existing classes when switching between classes
+    $('#ment_result').removeClass('success error');
+
+    if (x == 'recommended') {
+    	 var prediction = data.prediction; // Accessing prediction value from response
+        $('#ment_result').html("");
+        $('#ment_result').addClass('success'); // Add success class
+        $('#ment_result').append('<p>AI Successfully Predicted the Drug :  ' + prediction + '</p>');
+    } else {
+        $('#ment_result').html("");
+        $('#ment_result').addClass('error'); // Add error class
+        $('#ment_result').append('<p>AI Unable To Find The Drug Please Make The Appointment For The Doctor</p>');
+    }
+},
+error: function (xhr, status, error) {
+    console.log('Error:', error);
+    $('#ment_result').html("");
+    $('#ment_result').append('An error occurred. Please try again.');
+}
+
+
+
+		});
+  });
+
+
+  // -------------------- Arrange Appointment --------------------------------
+
+
+  $('#mytable').on("click", ".btn_plan", function(){
+  	console.log('Button Appointment Clicked');
+	let disease = $(this).attr("data-sid");
+
+	$('#prediction_id').val(disease);
+
+	console.log('Prediction ID is',disease);
+
+  });
+
+
+
+ //--------------------Appointment Date Submiting ----------------------------
+
+$('#myform').on("click", ".modal_ment", function(){
+  	console.log('Button Modal Clicked');
+  	var pk = $('#prediction_id').val();
+  	console.log('Prediction ID is',pk);
+
+
+  	var day = $('#myform #day').val();
+  	var time = $('#myform #time').val();
+  	console.log('Day is ',day);
+  	console.log('Time is ',time);
+
+  	mydata = {pk:pk, day:day, time:time};
+		$.ajax({
+			url: "{% url 'savement' %}",
+			method: "POST",
+			data: mydata,
+
+			success: function(data){
+				console.log('Data Sent To The Backend');
+				$('#form').modal('hide'); // This line will hide the modal (pop up)
+				// Optionally, display a success message to the user
+                alert('Submit successfully');
+				$('.modal-backdrop').remove(); // Remove the modal backdrop
+				$('body').removeClass('modal-open'); // Remove the class that prevents scrolling
+			}
+		});
+});
+
+//--------------------------------Old one -----------------------------------------------------
+
+ /* $('#myform').on("click", ".modal_ment", function(){
+  	console.log('Button Modal Clicked');
+  	var pk = $('#prediction_id').val();
+  	console.log('Prediction ID is',pk);
+
+
+  	var day = $('#myform #day').val();
+  	var time = $('#myform #time').val();
+  	console.log('Day is ',day);
+  	console.log('Time is ',time);
+
+
+
+	    mydata = {pk:pk, day:day, time:time};
+		$.ajax({
+			url: "{% url 'savement' %}",
+			method: "POST",
+			data:mydata,
+
+			success:function(data){
+				console.log('Data Sent To The Backend');
+				$('#form').hide();
+
+			}
+		});
+  });  
+
+*/
+
+
+
+});
+</script>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
