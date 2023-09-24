@@ -15,10 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+    
+     - name: Checkout code
+       uses: actions/checkout@v2
 
-      - name: Set up Python version
-        uses: actions/setup-python@v1
+      - name: Set up Python 
+        uses: actions/setup-python@v2
         with:
           python-version: '3.11'
 
@@ -28,18 +30,20 @@ jobs:
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
       - name: Set environment variables
         run: |
-          echo "DJANGO_SUPERUSER_PASSWORD=mysecretpassword" >> $GITHUB_ENV
-          echo "DJANGO_COLLECTSTATIC_NOINPUT=1" >> $GITHUB_ENV
+          echo "DJANGO_SUPERUSER_PASSWORD=5351" >> $GITHUB_ENV
+          
 
 
 
-      - name: Run collectstatic
+      - name: Run collectstatic without prompt 
         run: |
-          python manage.py collectstatic
+          python manage.py collectstatic --no-input
         
 
         
