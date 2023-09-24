@@ -8,14 +8,14 @@ on:
   push:
     branches:
       - main
-   workflow_dispatch: 
+      
+   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-    
+    steps
      - name: Checkout code
        uses: actions/checkout@v2
 
@@ -38,17 +38,10 @@ jobs:
         run: |
           echo "DJANGO_SUPERUSER_PASSWORD=5351" >> $GITHUB_ENV
           
-
-
-
       - name: Run collectstatic without prompt 
         run: |
           python manage.py collectstatic --no-input
         
-
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
