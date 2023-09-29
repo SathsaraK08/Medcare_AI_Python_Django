@@ -1,6 +1,7 @@
 import os
 from .settings import *
 from .settings import BASE_DIR
+from whitenoise import WhiteNoise
 
 
 SECRET_KEY = os.environ['SECRET']

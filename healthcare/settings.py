@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import dj_database_url
-
+from whitenoise import WhiteNoise
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -11,9 +11,10 @@ SECRET_KEY = 'dhup^y*ngb9w+-8h2=w^s+ucy0-p7_8f_3c!7tn!jy2xlmyh8_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.azurewebsites.net', 'medaidoctestv.azurewebsites.net']
+
 
 # Application definition
 
@@ -68,14 +69,13 @@ WSGI_APPLICATION = 'healthcare.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'healthcare_db',
-        'USER': 'root',
-        'PASSWORD': '5351',
-        'HOST': '127.0.0.1',
-        'PORT': '3306'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django',
+        'USER': 'anshxlopfx@medaidoctestv',
+        'PASSWORD': '-8HwG@kra7zs+ci',
+        'HOST': 'medaidoctestv.postgres.database.azure.com',
+        'PORT': '5432',
     }
 }
 

@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 from django.urls import path
-from your_app.views import health_check
+from core.views import health_check
 
 
 
