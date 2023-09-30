@@ -70,11 +70,11 @@ WSGI_APPLICATION = 'healthcare.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'django',
-        'USER': 'anshxlopfx@medaidoctestv',
-        'PASSWORD': '-8HwG@kra7zs+ci',
-        'HOST': 'medaidoctestv.postgres.database.azure.com',
+        'USER': 'djangotest',
+        'PASSWORD': 'tc"CAN%t7JUE.)n',
+        'HOST': 'medcaredjango.postgres.database.azure.com',
         'PORT': '5432',
     }
 }
