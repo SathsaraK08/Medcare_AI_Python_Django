@@ -17,6 +17,7 @@ pandas
 pipenv
 platformdirs
 psycopg2
+psycopg2-binary
 pyarrow
 pylance
 PyMySQL

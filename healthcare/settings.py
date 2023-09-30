@@ -70,7 +70,7 @@ WSGI_APPLICATION = 'healthcare.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django',
         'USER': 'djangotest',
         'PASSWORD': 'tc"CAN%t7JUE.)n',
